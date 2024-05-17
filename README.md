@@ -3,7 +3,7 @@ One Page Design Doc:
 
 https://quip.com/ePFlAKh5CxFD/One-Page-Design-Lead-Management-System
 
-***Overview***
+***Overview***  
 The Lead Management System (LMS) is a FastAPI-based application designed to manage lead information effectively. It allows for the creation, retrieval, and updating of lead details within an organization. The system also automates the sending of notification emails when new leads are created.
 
 Local Setup
