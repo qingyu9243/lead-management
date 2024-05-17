@@ -1,8 +1,11 @@
 import uvicorn
 import uuid
 import mysql.connector
+import smtplib
 from fastapi import FastAPI, Body, HTTPException
 from pydantic import BaseModel
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 import lead_utils
 
@@ -60,6 +63,13 @@ def create_lead(payload: Payload):
             mydb.close()
             print("MySql connection is closed")
     
+    # send email after email configuration complete
+    #send_email(
+    #    subject = "New Lead Created",
+    #    to_emails =[payload.email, "attorney@example.com"],
+    #    content = "A new lead has been created. Here are the details." + payload.resume
+    #)
+
     return {
         "lead_id":lead_id,
         "first_name": payload.first_name,
@@ -130,6 +140,26 @@ def update_lead(lead_id: str, new_status: Status):
             mycursor.close()
             mydb.close()
             print("MySql connection is closed")
+
+# need to configure real smtp email server to test
+def send_email(subject, to_emails, content):
+    sender_email = "lead_management@example.com"
+    sender_password = "lead_management-email-password"
+
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = ", ".join(to_emails)
+    message["Subject"] = subject
+    message.attach(MIMEText(content, "plain"))
+
+    try:
+        with smtplib.SMTP("smtp.example.com", 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, to_emails, message.as_string())
+            print("Email sent successfully")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=5000, log_level="info")
