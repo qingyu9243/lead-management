@@ -64,7 +64,7 @@ def create_lead(payload: Payload):
             print("MySql connection is closed")
     
     # send email after email configuration complete
-    #send_email(
+    # send_email(
     #    subject = "New Lead Created",
     #    to_emails =[payload.email, "attorney@example.com"],
     #    content = "A new lead has been created. Here are the details." + payload.resume
